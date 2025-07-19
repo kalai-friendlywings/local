@@ -1,0 +1,224 @@
+/* Modern color scheme */
+:root {
+  --primary-color: #4361ee;
+  --primary-hover: #3a56d4;
+  --text-color: #2b2d42;
+  --border-color: #e2e8f0;
+  --focus-glow: rgba(67, 97, 238, 0.2);
+}
+
+.search-filter-container {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.search-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Search input styling */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  font-size: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  color: var(--text-color);
+  font-weight: 500;
+  background-color: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--focus-glow);
+}
+
+.search-button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-color);
+  border: none;
+  border-radius: 8px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.search-button:hover {
+  background: var(--primary-hover);
+}
+
+.search-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: white;
+}
+
+/* Location input styling */
+
+.location-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  font-size: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  color: var(--text-color);
+  font-weight: 500;
+  background-color: white;
+}
+
+.location-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--focus-glow);
+}
+
+.location-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--primary-color);
+}
+
+/* Responsive design for tablets and desktops */
+@media (min-width: 768px) {
+  .search-input-group {
+   display: none;
+  }
+  
+  .search-wrapper{
+    flex: 1;
+  }
+}
+
+/* Micro-interactions for better UX */
+.search-input:hover,
+.location-input:hover {
+  border-color: #94a3b8;
+}
+
+.search-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+
+.address-dropdown {
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.search-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Input fields and dropdown styles */
+
+.search-wrapper {
+  width: 100%;
+}
+
+.address-dropdown {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: white;
+  appearance: none;
+  white-space: nowrap; /* keep content in one line */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.address-dropdown-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+
+.location-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.address-dropdown {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234361ee' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+@media (max-width: 480px) {
+  .address-dropdown {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+:root {
+  --primary-color: #4361ee;
+  --text-color: #2b2d42;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+/* Better mobile dropdown for Bootstrap */
+.custom-select-dropdown {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='gray' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+/* Responsive for small screens */
+@media (max-width: 576px) {
+  .custom-select-dropdown {
+    font-size: 1.1rem;
+    padding: 0.9rem 1.2rem;
+  }
+}
+
+.z-index-3 {
+  z-index: 3;
+}
+

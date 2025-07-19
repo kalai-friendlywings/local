@@ -1,0 +1,54 @@
+.shops-container {
+  max-width: 1200px;
+}
+
+.shop-card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.shop-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.shop-image {
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .shop-image {
+    height: 150px;
+  }
+  
+  .shop-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .shop-card:hover {
+    transform: none;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.badge {
+  transition: all 0.2s ease;
+  font-weight: normal;
+}
+
+.badge:hover {
+  opacity: 0.9;
+}
+
+/* Better touch targets for mobile */
+.btn, .form-control, .badge {
+  touch-action: manipulation;
+}

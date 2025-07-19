@@ -1,0 +1,77 @@
+/* src/userAccount/AccountPage.css */
+
+/* Mobile-first base styles */
+.account-page-container {
+  padding-bottom: 56px; /* Space for bottom nav on mobile */
+  padding: 16px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Transition for content on tab switch */
+.tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Buttons and list items should be touch-friendly */
+button,
+.MuiListItemButton-root {
+  min-height: 48px; /* Recommended for touch devices */
+  font-size: 1rem;
+}
+
+/* Desktop-specific adjustments */
+@media (min-width: 900px) {
+  .account-page-container {
+    padding: 32px;
+    padding-bottom: 0;
+  }
+}
+
+/* Optional: style section headings */
+.section-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* Optional: spacing for form elements */
+.form-field {
+  margin-bottom: 16px;
+}
+
+/* Optional: consistent card styling */
+.account-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  padding: 24px;
+}
+
+/* Optional: bottom nav style */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: #ffffff;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

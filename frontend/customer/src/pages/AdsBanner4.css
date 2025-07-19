@@ -1,0 +1,18 @@
+.ads-carousel img {
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease;
+  }
+  
+  
+  .ads-carousel img {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  /* Mobile-specific styles */
+  @media (max-width: 768px) {
+    .ads-carousel img {
+      height: 100px;
+    }
+  }
+  

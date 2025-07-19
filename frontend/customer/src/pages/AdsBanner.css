@@ -1,0 +1,9 @@
+.ads-banner {
+    background: linear-gradient(90deg, #ff6f61, #ff9472);
+    color: white;
+    font-size: 0.95rem;
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+  }
+  

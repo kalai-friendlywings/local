@@ -1,0 +1,14 @@
+.container {
+  max-width: 800px;
+}
+
+.card h5 {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+  .card-body {
+    flex-direction: column;
+    text-align: left;
+  }
+}

@@ -1,0 +1,12 @@
+.ads-banners img {
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+  }
+  
+  @media (max-width: 768px) {
+    .ads-banner .card {
+      border-radius: 1rem;
+    }
+  }
+  

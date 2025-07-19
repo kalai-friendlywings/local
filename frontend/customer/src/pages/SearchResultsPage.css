@@ -1,0 +1,119 @@
+:root {
+  --primary-color: #4361ee;
+  --primary-hover: #3a56d4;
+  --text-color: #2b2d42;
+  --border-color: #dbeafe;
+  --bg-color: #ffffff;
+  --focus-glow: rgba(67, 97, 238, 0.15);
+  --shadow: rgba(0, 0, 0, 0.05) 0px 4px 12px;
+}
+
+.search-filter-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: var(--bg-color);
+  box-shadow: var(--shadow);
+  border-radius: 16px;
+}
+
+.search-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-wrapper,
+.location-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input styling */
+.search-input,
+.location-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  transition: 0.2s all ease-in-out;
+}
+
+.search-input:focus,
+.location-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px var(--focus-glow);
+}
+
+.search-input:hover,
+.location-input:hover {
+  border-color: #94a3b8;
+}
+
+/* Search button */
+.search-button {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-color);
+  border: none;
+  border-radius: 10px;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.search-button:hover {
+  background: var(--primary-hover);
+}
+
+.search-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.search-icon,
+.location-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: white;
+}
+
+.location-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: var(--primary-color);
+}
+
+/* Error message */
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+  margin-left: 0.4rem;
+}
+
+/* Responsive for medium+ screens */
+@media (min-width: 768px) {
+  .search-input-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .search-wrapper,
+  .location-wrapper {
+    flex: 1;
+  }
+}
