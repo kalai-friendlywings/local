@@ -1,5 +1,3 @@
-// src/components/FloatingCartBar.jsx
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,7 +6,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const FloatingCartBar = ({ visible = true }) => {
   const navigate = useNavigate();
-  const cartItems = useSelector((state) => state.cart.items);
+
+  // Filter only items with quantity > 0
+  const cartItems = useSelector((state) =>
+    state.cart.items.filter((item) => item.quantity > 0)
+  );
 
   const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cartItems.reduce(
@@ -26,7 +28,7 @@ const FloatingCartBar = ({ visible = true }) => {
           bottom: 0,
           left: 0,
           width: "100%",
-          bgcolor: "#222",
+          bgcolor: "skyblue",
           color: "white",
           py: 1.5,
           px: 3,
@@ -47,7 +49,7 @@ const FloatingCartBar = ({ visible = true }) => {
         </Box>
         <Button
           variant="contained"
-          color="warning"
+          color="light"
           onClick={() => navigate("/checkout")}
         >
           View Cart

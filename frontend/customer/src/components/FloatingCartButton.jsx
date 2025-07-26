@@ -1,4 +1,4 @@
-// components/FloatingCartButton.jsx
+/* // components/FloatingCartButton.jsx
 import React from 'react';
 import { Badge, IconButton } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -27,3 +27,4 @@ const FloatingCartButton = ({ count }) => {
 };
 
 export default FloatingCartButton;
+ */

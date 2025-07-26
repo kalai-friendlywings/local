@@ -10,11 +10,6 @@ import {
   DialogTitle,
   DialogContent,
   Tooltip,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Badge,
   Slide,
 } from "@mui/material";
 import {
@@ -23,7 +18,6 @@ import {
   Share as ShareIcon,
   Add as AddIcon,
   Remove as RemoveIcon,
-  ShoppingCart as ShoppingCartIcon,
 } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,27 +84,11 @@ function ProductDetail() {
 
   return (
     <div className="container-fluid px-3 pt-3 pb-5">
-      {/* Header Actions */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      {/* Back Button */}
+      <div className="mb-3">
         <Button variant="text" onClick={() => navigate(-1)}>
           ← Back
         </Button>
-        <div className="d-flex gap-2 align-items-center">
-          <Tooltip title="Share">
-            <IconButton onClick={() => setShareOpen(true)}>
-              <ShareIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={isFavorited ? "Remove Favorite" : "Add to Favorites"}>
-            <IconButton onClick={handleFavoriteToggle}>
-              {isFavorited ? (
-                <FavoriteIcon color="error" />
-              ) : (
-                <FavoriteBorderIcon />
-              )}
-            </IconButton>
-          </Tooltip>
-        </div>
       </div>
 
       {/* Product Info */}
@@ -122,10 +100,33 @@ function ProductDetail() {
             className="img-fluid rounded shadow-sm"
           />
         </div>
+
         <div className="col-md-6">
-          <h3>{product.name}</h3>
-          <h5 className="text-muted">₹{product.discount_price}</h5>
-          <del className="text-secondary">₹{product.original_price }</del>
+          <div className="d-flex align-items-center justify-content-between">
+            <h3 className="mb-0">{product.name}</h3>
+            <div className="d-flex align-items-center gap-2">
+              <Tooltip title="Share">
+                <IconButton onClick={() => setShareOpen(true)} size="small">
+                  <ShareIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={isFavorited ? "Remove Favorite" : "Add to Favorites"}
+              >
+                <IconButton onClick={handleFavoriteToggle} size="small">
+                  {isFavorited ? (
+                    <FavoriteIcon color="error" />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+              </Tooltip>
+            </div>
+          </div>
+
+          <h5 className="text-muted mt-2">₹{product.discount_price}</h5>
+          <del className="text-secondary">₹{product.original_price}</del>
+
           <p className="mt-2">
             <strong>Availability: </strong>
             <span
@@ -136,22 +137,25 @@ function ProductDetail() {
           </p>
 
           {/* Add to Cart / Quantity Buttons */}
-          <div className="mt-4 d-flex justify-content-start">
+          <div className="mt-4 p-2 d-flex justify-content-end">
             {cartQuantity === 0 ? (
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddItem}
               >
-                Add
+                Add to cart
               </Button>
             ) : (
               <div
-                className="d-flex align-items-center gap-2 px-3 py-1"
+                className="d-flex align-items-center gap-2 px-2 py-0"
                 style={{
-                  border: "2px solid #fdd835",
+                  border: "2px solid #5635fdff",
                   borderRadius: 12,
-                  background: "#fff",
+                  background: "lightyellow",
+                  color: "#5635fdff",
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
                 }}
               >
                 <IconButton onClick={handleReduceCart} size="small">
@@ -194,26 +198,71 @@ function ProductDetail() {
       </div>
 
       {/* Related Products */}
+      {/* Related Products */}
       <div className="mt-5">
         <h5 className="mb-3">Related Products</h5>
         <div className="d-flex overflow-auto gap-3 pb-2">
-          {trendingProducts
-            .filter((p) => p.id !== product.id)
-            .slice(0, 6)
-            .map((item) => (
-              <div key={item.id} className="card" style={{ minWidth: 150 }}>
+          {[
+            {
+              id: 101,
+              name: "Wireless Headphones",
+              image: "https://via.placeholder.com/150x120.png?text=Headphones",
+              original_price: 2500,
+              discount_price: 1999,
+            },
+            {
+              id: 102,
+              name: "Smart Watch",
+              image: "https://via.placeholder.com/150x120.png?text=Smart+Watch",
+              original_price: 3200,
+              discount_price: 2799,
+            },
+            {
+              id: 103,
+              name: "Bluetooth Speaker",
+              image: "https://via.placeholder.com/150x120.png?text=Speaker",
+              original_price: 1800,
+              discount_price: 1399,
+            },
+          ].map((item) => (
+            <div
+              key={item.id}
+              className="card border-0 shadow-sm"
+              style={{ minWidth: 160 }}
+            >
+              {/* Image Section */}
+              <div
+                className="card-img-top p-2 bg-light d-flex align-items-center justify-content-center"
+                style={{ height: 120 }}
+              >
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="card-img-top"
-                  style={{ height: 120, objectFit: "cover" }}
+                  style={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                  }}
                 />
-                <div className="card-body p-2">
-                  <h6 className="card-title mb-1">{item.name}</h6>
-                  <p className="text-muted mb-0">₹{item.discount_price}</p>
-                </div>
               </div>
-            ))}
+
+              {/* Text Info Section */}
+              <div className="card-body p-2">
+                <h6 className="card-title mb-1 text-truncate">{item.name}</h6>
+                <div className="mb-1">
+                  <span className="text-muted text-decoration-line-through me-1">
+                    ₹{item.original_price}
+                  </span>
+                  <span className="fw-bold text-success">
+                    ₹{item.discount_price}
+                  </span>
+                </div>
+                <button className="btn btn-sm btn-primary w-100">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -261,7 +310,7 @@ function ProductDetail() {
         </DialogContent>
       </Dialog>
 
-      {/* Floating Swiggy-style Checkout Bar */}
+      {/* Floating Checkout Bar */}
       <FloatingCartBar />
     </div>
   );
