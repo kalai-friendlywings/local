@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../pages/SearchFilterBar.css";
 
 function SearchFilterBar() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery] = useState("");
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
   const [addresses, setAddresses] = useState([]);
@@ -69,7 +69,9 @@ function SearchFilterBar() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        const formatted = `My Location (${latitude.toFixed(3)}, ${longitude.toFixed(3)})`;
+        const formatted = `My Location (${latitude.toFixed(
+          3
+        )}, ${longitude.toFixed(3)})`;
         setLocation(formatted);
         setShowSuggestions(false);
       },
@@ -88,7 +90,7 @@ function SearchFilterBar() {
   return (
     <form
       onSubmit={handleSearchSubmit}
-      className="container my-3 position-relative"
+      className="container my-3 position-relative  d-block d-md-none"
     >
       <div className="row gy-3">
         {/* Location Input */}
@@ -148,27 +150,21 @@ function SearchFilterBar() {
         )}
 
         {/* Search input and button */}
-        <div className="col-12 d-flex">
-          <div className="flex-grow-1 me-2">
-            <input
-              type="text"
-              className="form-control form-control-lg"
-              placeholder="Search for products or shops..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary btn-lg">
-            <svg
-              className="bi bi-search"
-              width="20"
-              height="20"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11 6a5 5 0 1 0-1.001 9.9A5 5 0 0 0 11 6zM2 6a6 6 0 1 1 10.9 3.001L16 13.1 13.1 16l-3.1-3.1A6 6 0 0 1 2 6z" />
-            </svg>
-          </button>
+        <div className="col-12">
+          <input
+            type="text"
+            className="form-control form-control-lg"
+            placeholder="Search for products or shops..."
+            onClick={() =>
+              navigate(
+                `/search-results?query=${encodeURIComponent(
+                  searchQuery
+                )}&location=${encodeURIComponent(location)}`
+              )
+            }
+            readOnly
+            style={{ cursor: "pointer", backgroundColor: "#fff" }}
+          />
         </div>
       </div>
     </form>

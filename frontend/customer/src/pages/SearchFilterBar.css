@@ -101,15 +101,20 @@
 }
 
 /* Responsive design for tablets and desktops */
+/* Mobile (default) - show the search input group */
+.search-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Tablet and Desktop - hide the search input group */
 @media (min-width: 768px) {
   .search-input-group {
-   display: none;
-  }
-  
-  .search-wrapper{
-    flex: 1;
+    display: none;
   }
 }
+
 
 /* Micro-interactions for better UX */
 .search-input:hover,

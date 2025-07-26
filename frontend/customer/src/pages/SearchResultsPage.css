@@ -117,3 +117,44 @@
     flex: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .product-card {
+    min-width: 180px;
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+  }
+
+  .product-brand,
+  .product-description {
+    font-size: 0.75rem;
+  }
+
+  .current-price {
+    font-size: 1rem;
+  }
+
+  .original-price {
+    font-size: 0.7rem;
+  }
+
+  .add-to-cart-btn {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    min-width: 160px;
+  }
+
+  .product-image-container {
+    
+    aspect-ratio: 1/1.1;
+  }
+}
+
+

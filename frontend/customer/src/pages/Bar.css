@@ -1,28 +1,48 @@
-/* Top nav style */
-
+/* Base AppBar style */
 .custom-appbar {
   max-width: 95%;
+  margin: 0 auto;
+  padding: 0.4rem 1rem;
   border: 1px solid #e5e5e5;
   background-color: #003DA6;
   border-radius: 3rem;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Logo color */
+/* Logo */
 .logo-icon {
   font-size: 1.5rem;
-  color: #3f6df6;
+  color: #fff;
 }
 
-/* Drawer styles */
+/* Desktop nav links */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Drawer (mobile) styles */
 .mobile-drawer {
   z-index: 1050;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80%;
+  max-width: 300px;
+  height: 100%;
+  background: white;
+  padding: 1.5rem;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+  animation: slideDrawer 0.3s ease-out forwards;
   display: flex;
   flex-direction: column;
-  animation: slideDrawer 0.3s ease-out forwards;
 }
 
-/* Animate drawer slide-in */
+/* Drawer animations */
 @keyframes slideDrawer {
   from {
     transform: translateX(-100%);
@@ -34,11 +54,11 @@
   }
 }
 
-/* Drawer nav links */
 .drawer-link {
   opacity: 0;
   transform: translateX(-10px);
   animation: slideIn 0.4s forwards;
+  margin-bottom: 1rem;
 }
 
 .drawer-link:nth-child(1) { animation-delay: 0.1s; }
@@ -50,5 +70,49 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* ======== MEDIA QUERIES ======== */
+
+/* Tablet view (iPad Mini and up) */
+@media screen and (max-width: 768px) {
+  .custom-appbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.6rem 1rem;
+    border-radius: 1rem;
+  }
+
+  .nav-links {
+    display: none; /* hide desktop nav */
+  }
+
+  .mobile-menu-icon {
+    display: block;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+/* Mobile view */
+@media screen and (max-width: 480px) {
+  .custom-appbar {
+    flex-direction: row;
+    padding: 0.5rem;
+    border-radius: 1rem;
+  }
+
+  .logo-icon {
+    font-size: 1.3rem;
+  }
+
+  .mobile-menu-icon {
+    font-size: 1.6rem;
+  }
+
+  .drawer-link {
+    font-size: 1rem;
   }
 }

@@ -1,146 +1,171 @@
 import React, { useState } from "react";
-import "../Pages/TrendingProductCard.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addItem, updateQuantity, removeItem } from "../redux/cartSlice";
+import "../pages/TrendingProductCard.css";
 
 function TrendingProductCard({ product }) {
+  const dispatch = useDispatch();
+  const cartItem = useSelector(state =>
+    state.cart.items.find(item => item.id === product.id)
+  );
   const [liked, setLiked] = useState(false);
 
-  // Calculate discount percentage
+  const quantity = cartItem?.quantity || 0;
+
   const calculateDiscount = () => {
-    if (!product.originalPrice || !product.reducedPrice || 
-        product.originalPrice <= product.reducedPrice) return null;
-    const discountAmount = product.originalPrice - product.reducedPrice;
-    const discountPercentage = (discountAmount / product.originalPrice) * 100;
-    return Math.round(discountPercentage);
+    if (
+      !product.original_price ||
+      !product.discount_price ||
+      product.original_price <= product.discount_price
+    )
+      return null;
+    const discountAmount = product.original_price - product.discount_price;
+    return Math.round((discountAmount / product.original_price) * 100);
   };
 
   const discountPercentage = calculateDiscount();
 
-  const toggleLike = () => {
+  const toggleLike = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     setLiked(!liked);
-    if (!liked) {
-      const heart = document.querySelector(`.like-btn-${product.id}`);
-      heart.classList.add("bounce");
-      setTimeout(() => heart.classList.remove("bounce"), 400);
+    const heart = document.querySelector(`.like-btn-${product.id}`);
+    heart.classList.add("bounce");
+    setTimeout(() => heart.classList.remove("bounce"), 400);
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    dispatch(addItem({ ...product, quantity: 1 }));
+  };
+
+  const handleIncrement = (e) => {
+    e.preventDefault();
+    dispatch(updateQuantity({ id: product.id, quantity: quantity + 1 }));
+  };
+
+  const handleDecrement = (e) => {
+    e.preventDefault();
+    if (quantity > 1) {
+      dispatch(updateQuantity({ id: product.id, quantity: quantity - 1 }));
+    } else {
+      dispatch(removeItem(product.id));
     }
   };
 
   return (
-    <div className="product-card">
-      {/* Product Image with Like Button and Discount Badge */}
-      <div className="product-image-container">
-        {/* Auto-calculated Discount Badge - Top Left */}
-        {discountPercentage > 0 && (
-          <div className="discount-badge">{discountPercentage}% OFF</div>
-        )}
-        
-        <img
-          src={product.image}
-          alt={product.name}
-          className="product-image"
-          loading="lazy"
-        />
-        
-        {/* Like Button - Top Right */}
-        <button
-          className={`like-btn like-btn-${product.id} ${liked ? "liked" : ""}`}
-          onClick={toggleLike}
-          aria-label={liked ? "Unlike product" : "Like product"}
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill={liked ? "#e83e8c" : "none"}
-            stroke={liked ? "#e83e8c" : "#6B7280"}
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
-        </button>
-      </div>
+    <Link to={`/product/${product.id}`} className="product-card-link">
+      <div className="product-card">
+        <div className="product-image-container">
+          {discountPercentage > 0 && (
+            <div className="discount-badge">{discountPercentage}% OFF</div>
+          )}
 
-      {/* Product Details */}
-      <div className="product-details">
-        <div className="product-meta">
-          <span className="product-location">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="product-image"
+            loading="lazy"
+          />
+
+          <button
+            className={`like-btn like-btn-${product.id} ${liked ? "liked" : ""}`}
+            onClick={toggleLike}
+            aria-label={liked ? "Unlike product" : "Like product"}
+          >
             <svg
-              width="16"
-              height="16"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
-              fill="none"
-              stroke="#6B7280"
+              fill={liked ? "#e83e8c" : "none"}
+              stroke={liked ? "#e83e8c" : "#6B7280"}
               strokeWidth="2"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               />
             </svg>
-            {product.location || "Local"}
-          </span>
+          </button>
         </div>
 
-        <h3 className="product-name">{product.name}</h3>
-        <p className="product-brand">{product.brand || "Local Brand"}</p>
-        <p className="product-description">
-          {product.description || "Trending local product"}
-        </p>
-
-        <div className="product-pricing">
-          <div className="price-container">
-            <span className="current-price">₹{product.reducedPrice || product.price}</span>
-            {product.originalPrice && product.originalPrice > product.reducedPrice && (
-              <span className="original-price">₹{product.originalPrice}</span>
-            )}
-          </div>
-          <span
-            className={`availability ${
-              product.available ? "available" : "out-of-stock"
-            }`}
-          >
-            {product.available ? "In Stock" : "Out of Stock"}
-          </span>
-        </div>
-
-        <button
-          className="add-to-cart-btn"
-          disabled={!product.available}
-          aria-disabled={!product.available}
-        >
-          {product.available ? (
-            <>
+        <div className="product-details">
+          <div className="product-meta">
+            <span className="product-location">
               <svg
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="currentColor"
+                stroke="#6B7280"
                 strokeWidth="2"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              Add to Cart
-            </>
+              {product.location || "Local"}
+            </span>
+          </div>
+
+          <h3 className="product-name">{product.name}</h3>
+          <p className="product-brand">{product.brand || "Local Brand"}</p>
+          <p className="product-description">
+            {product.description || "Trending local product"}
+          </p>
+
+          <div className="product-pricing">
+            <div className="price-container">
+              <span className="current-price">
+                ₹{product.discount_price || product.original_price}
+              </span>
+              {product.original_price &&
+                product.original_price > product.discount_price && (
+                  <span className="original-price">
+                    ₹{product.original_price}
+                  </span>
+                )}
+            </div>
+            <span
+              className={`availability ${
+                product.stock > 0 ? "available" : "out-of-stock"
+              }`}
+            >
+              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+            </span>
+          </div>
+
+          {product.stock > 0 ? (
+            <div className="cart-controls">
+              {quantity > 0 ? (
+                <div className="qty-selector">
+                  <button onClick={handleDecrement}>−</button>
+                  <span>{quantity}</span>
+                  <button onClick={handleIncrement}>+</button>
+                </div>
+              ) : (
+                <button className="add-btn" onClick={handleAdd}>
+                  + Add
+                </button>
+              )}
+            </div>
           ) : (
-            "Notify Me"
+            <button className="add-to-cart-btn" disabled>
+              Notify Me
+            </button>
           )}
-        </button>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

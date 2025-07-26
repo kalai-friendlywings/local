@@ -1,219 +1,218 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Badge, Card, Offcanvas } from 'react-bootstrap';
-import { FaStar, FaSearch, FaMapMarkerAlt, FaFilter, FaTimes } from 'react-icons/fa';
-import '../pages/Shops.css';
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Chip,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  InputAdornment,
+} from "@mui/material";
+import {
+  Search as SearchIcon,
+  Sort as SortIcon,
+} from "@mui/icons-material";
+import ShopCard from "../components/ShopCard";
+import "../pages/Shops.css"; // Custom styles
 
 const sampleShops = [
-  // ... (same sample shops data as before)
+  {
+    id: 1,
+    name: "Trendy Threads",
+    category: "Fashion",
+    location: "Chennai",
+    tags: ["Fashion"],
+    createdAt: "2024-07-01",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    name: "Spicy Bites",
+    category: "Food",
+    location: "Madurai",
+    tags: ["Food"],
+    createdAt: "2024-06-15",
+    rating: 4.2,
+  },
+  {
+    id: 3,
+    name: "Gadget Galaxy",
+    category: "Electronics",
+    location: "Bangalore",
+    tags: ["Electronics"],
+    createdAt: "2024-05-10",
+    rating: 4.7,
+  },
 ];
 
-const Shops = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
-  const [sortBy, setSortBy] = useState('featured');
-  const [activeTags, setActiveTags] = useState([]);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+const allTags = ["Fashion", "Food", "Electronics", "Handmade", "Books"];
 
-  // ... (keep existing filter/sort logic)
+export default function Shops() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [sortBy, setSortBy] = useState("featured");
+  const [activeTags, setActiveTags] = useState([]);
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
+
+  const toggleTag = (tag) => {
+    setActiveTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const filteredShops = sampleShops.filter((shop) => {
+    const matchesSearch = shop.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesLocation =
+      locationFilter === "" ||
+      shop.location.toLowerCase().includes(locationFilter.toLowerCase());
+    const matchesTags =
+      activeTags.length === 0 ||
+      activeTags.every((tag) => shop.tags.includes(tag));
+    return matchesSearch && matchesLocation && matchesTags;
+  });
+
+  const sortedShops = [...filteredShops].sort((a, b) => {
+    switch (sortBy) {
+      case "new":
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      case "top":
+        return b.rating - a.rating;
+      default:
+        return 0;
+    }
+  });
 
   return (
-    <Container className="py-4 shops-container">
-      {/* Header */}
-      <div className="text-center mb-4 mb-md-5">
-        <h2 className="fw-bold display-6 display-md-5">Discover Local Shops</h2>
-        <p className="text-muted lead d-none d-md-block">
-          Browse and shop from unique local businesses in your community
-        </p>
-      </div>
+    <Box px={{ xs: 2, sm: 4, md: 6 }} py={{ xs: 3, sm: 4 }}>
+      <Typography variant="h4" fontWeight={600} gutterBottom>
+        Explore Shops
+      </Typography>
 
-      {/* Search & Filter Row - Desktop */}
-      <Row className="mb-3 g-2 d-none d-md-flex">
-        <Col md={5}>
-          <div className="position-relative">
-            <Form.Control
-              type="text"
-              placeholder="Search for shops..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="ps-4"
-            />
-            <FaSearch className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
-          </div>
-        </Col>
-        <Col md={4}>
-          <div className="position-relative">
-            <Form.Control
-              type="text"
-              placeholder="Filter by location..."
-              value={locationFilter}
-              onChange={(e) => setLocationFilter(e.target.value)}
-              className="ps-4"
-            />
-            <FaMapMarkerAlt className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
-          </div>
-        </Col>
-        <Col md={3} className="d-flex gap-2">
-          <Button variant="outline-secondary" onClick={resetFilters} className="flex-grow-1">
-            <FaTimes className="me-1" /> Clear
-          </Button>
-          <Button variant="primary" className="flex-grow-1">
-            <FaFilter className="me-1" /> Filter
-          </Button>
-        </Col>
-      </Row>
+      <Box mb={2}>
+        <TextField
+          label="Enter your location"
+          variant="outlined"
+          value={locationFilter}
+          onChange={(e) => setLocationFilter(e.target.value)}
+          fullWidth
+          size="small"
+        />
+      </Box>
 
-      {/* Mobile Search & Filter Button */}
-      <Row className="mb-3 d-flex d-md-none g-2">
-        <Col xs={9}>
-          <div className="position-relative">
-            <Form.Control
-              type="text"
-              placeholder="Search shops..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="ps-4"
-            />
-            <FaSearch className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
-          </div>
-        </Col>
-        <Col xs={3}>
-          <Button 
-            variant="primary" 
-            className="w-100"
-            onClick={() => setShowMobileFilters(true)}
-          >
-            <FaFilter />
-          </Button>
-        </Col>
-      </Row>
-
-      {/* Mobile Filters Offcanvas */}
-      <Offcanvas 
-        show={showMobileFilters} 
-        onHide={() => setShowMobileFilters(false)}
-        placement="end"
+      <Box
+        display="flex"
+        gap={2}
+        mb={2}
+        alignItems="center"
+        flexWrap={{ xs: "wrap", sm: "nowrap" }}
       >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Filters</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <div className="mb-3">
-            <Form.Label>Location</Form.Label>
-            <div className="position-relative">
-              <Form.Control
-                type="text"
-                placeholder="Filter by location..."
-                value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
-                className="ps-4"
-              />
-              <FaMapMarkerAlt className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
+        <TextField
+          label="Search shops"
+          variant="outlined"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ flex: 1 }}
+        />
+
+        <IconButton
+          onClick={() => setSortDialogOpen(true)}
+          color="primary"
+          sx={{
+            border: "1px solid #ccc",
+            borderRadius: 1,
+            height: 40,
+            width: 40,
+            flexShrink: 0,
+          }}
+        >
+          <SortIcon />
+        </IconButton>
+      </Box>
+
+      {/* Tag Filter */}
+      <Box
+        sx={{
+          display: "flex",
+          overflowX: "auto",
+          gap: 1,
+          mb: 3,
+          pb: 1,
+        }}
+      >
+        {allTags.map((tag) => (
+          <Chip
+            key={tag}
+            label={tag}
+            onClick={() => toggleTag(tag)}
+            color={activeTags.includes(tag) ? "primary" : "default"}
+            clickable
+          />
+        ))}
+      </Box>
+
+      {/* Shop Cards */}
+      <div className="shops-wrapper">
+        {sortedShops.length > 0 ? (
+          sortedShops.map((shop) => (
+            <div className="shop-card-wrapper" key={shop.id}>
+              <ShopCard shop={shop} />
             </div>
-          </div>
-          
-          <div className="mb-3">
-            <Form.Label>Sort By</Form.Label>
-            <Form.Select 
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="featured">Featured</option>
-              <option value="new">New Arrivals</option>
-              <option value="top">Top Rated</option>
-            </Form.Select>
-          </div>
+          ))
+        ) : (
+          <Typography align="center" color="text.secondary">
+            No shops match your filters.
+          </Typography>
+        )}
+      </div>
 
-          <div className="mb-4">
-            <Form.Label>Tags</Form.Label>
-            <div className="d-flex flex-wrap gap-2">
-              {allTags.map((tag) => (
-                <Badge 
-                  key={tag} 
-                  pill 
-                  bg={activeTags.includes(tag) ? 'primary' : 'light'} 
-                  text={activeTags.includes(tag) ? 'white' : 'dark'} 
-                  className="px-3 py-2 cursor-pointer"
-                  onClick={() => toggleTag(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <Button 
-            variant="outline-danger" 
-            className="w-100 mb-2"
-            onClick={resetFilters}
-          >
-            <FaTimes className="me-1" /> Reset All
-          </Button>
-        </Offcanvas.Body>
-      </Offcanvas>
-
-      {/* Tags & Sort Row */}
-      <div className="d-flex flex-column flex-md-row justify-content-between mb-3">
-        <div className="mb-2 mb-md-0">
-          <h5 className="mb-2 mb-md-0">Filter by Tags</h5>
-          <div className="d-flex flex-wrap gap-2">
-            {allTags.map((tag) => (
-              <Badge 
-                key={tag} 
-                pill 
-                bg={activeTags.includes(tag) ? 'primary' : 'light'} 
-                text={activeTags.includes(tag) ? 'white' : 'dark'} 
-                className="px-3 py-2 cursor-pointer"
-                onClick={() => toggleTag(tag)}
+      {/* Sort Dialog */}
+      <Dialog
+        open={sortDialogOpen}
+        onClose={() => setSortDialogOpen(false)}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle>Sort By</DialogTitle>
+        <List>
+          {["featured", "new", "top"].map((option) => (
+            <ListItem key={option} disablePadding>
+              <ListItemButton
+                selected={sortBy === option}
+                onClick={() => {
+                  setSortBy(option);
+                  setSortDialogOpen(false);
+                }}
               >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </div>
-        
-        <div className="d-flex align-items-center gap-2">
-          <span className="d-none d-md-block me-2">Sort by:</span>
-          <Form.Select 
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            size="sm"
-            className="w-auto"
-          >
-            <option value="featured">Featured</option>
-            <option value="new">New Arrivals</option>
-            <option value="top">Top Rated</option>
-          </Form.Select>
-        </div>
-      </div>
-
-      {/* Results Count */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="mb-0">
-          {filteredShops.length} {filteredShops.length === 1 ? 'shop' : 'shops'} found
-        </h5>
-      </div>
-
-      {/* Shops Grid */}
-      {sortedShops.length > 0 ? (
-        <Row className="g-3">
-          {sortedShops.map((shop) => (
-            <Col key={shop.id} xl={3} lg={4} md={6} xs={12}>
-              <Card className="h-100 shop-card">
-                {/* ... (same card content as before) */}
-              </Card>
-            </Col>
+                <ListItemText
+                  primary={
+                    option === "featured"
+                      ? "Featured"
+                      : option === "new"
+                      ? "Newest"
+                      : "Top Rated"
+                  }
+                />
+              </ListItemButton>
+            </ListItem>
           ))}
-        </Row>
-      ) : (
-        <div className="text-center py-5">
-          <h4 className="text-muted">No shops found matching your criteria</h4>
-          <Button variant="outline-primary" onClick={resetFilters} className="mt-3">
-            Reset Filters
-          </Button>
-        </div>
-      )}
-    </Container>
+        </List>
+      </Dialog>
+    </Box>
   );
-};
-
-export default Shops;
+}

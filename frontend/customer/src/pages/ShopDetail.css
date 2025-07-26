@@ -4,8 +4,13 @@
   padding: 1rem;
 }
 
+/* === Shop Banner === */
 .shop-banner-container {
   height: 180px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  position: relative;
+  background-color: #f9f9f9;
 }
 
 @media (min-width: 768px) {
@@ -26,13 +31,48 @@
   object-fit: cover;
 }
 
+/* === Follow Button === */
+.follow-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.follow-btn:hover {
+  opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+  .follow-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* === Shop Info Section === */
 .shop-info-card {
+  background: #fff;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .shop-logo {
   width: 80px;
   height: 80px;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
 }
 
 @media (min-width: 768px) {
@@ -44,6 +84,8 @@
 
 .shop-name {
   font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 @media (min-width: 768px) {
@@ -52,20 +94,30 @@
   }
 }
 
-.follow-btn {
-  padding: 0.4rem 1rem;
-  font-size: 0.85rem;
+.shop-meta {
+  color: #666;
+  font-size: 0.95rem;
 }
 
-@media (min-width: 768px) {
-  .follow-btn {
-    padding: 0.5rem 1.2rem;
-  }
+/* === Tags === */
+.shop-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
+.shop-tags .badge {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.65rem;
+}
+
+/* === Tabs === */
 .shop-tabs {
+  display: flex;
   overflow-x: auto;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1.5rem;
 }
 
 .shop-tab {
@@ -75,26 +127,32 @@
   border: none;
   color: #333;
   cursor: pointer;
-  flex-shrink: 0;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
   transition: all 0.2s ease;
 }
 
 .shop-tab:hover {
-  color: #e53e3e;
+  color: #3e4fe5;
 }
 
 .shop-tab.active {
-  border-bottom: 2px solid #e53e3e;
-  color: #e53e3e;
+  border-bottom: 2px solid #3e4ce5;
+  color: #3e4fe5;
   font-weight: 600;
 }
 
+/* === Tab Content === */
 .tab-content-container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 0.95rem;
   line-height: 1.7;
 }
+
+/* === Products Grid === */
 .product-card {
   border: 1px solid #e0e0e0;
   border-radius: 0.5rem;
@@ -117,4 +175,19 @@
   .product-card .card-img-top {
     height: 200px;
   }
+}
+
+.product-card .card-body {
+  padding: 0.75rem;
+}
+
+.product-card {
+  border: none;
+  transition: transform 0.2s ease;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }

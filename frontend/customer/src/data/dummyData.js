@@ -4,8 +4,8 @@ export const trendingProducts = [
     id: 1,
     name: "Wireless Headphones",
     image: "../src/assets/images/11119934_4669613.jpg",
-    reducedPrice: 1999,
-    originalPrice: 2999,
+    discount_price: 1999,
+    original_price : 2999,
     shop: "Tech World",
     location: "Mumbai",
     description: "High-quality wireless headphones",
@@ -15,8 +15,8 @@ export const trendingProducts = [
     id: 2,
     name: "Smartwatch",
     image: "https://via.placeholder.com/150",
-    reducedPrice: 3499,
-    originalPrice: 4999,
+    discount_price: 3499,
+    original_price : 4999,
     shop: "Fresh Mart",
     location: "Chennai",
     description: "Stylish smartwatch with features",
@@ -79,5 +79,27 @@ export const brandedShops = [
     id: 4,
     name: "Walgreens",
     image: "https://logo.clearbit.com/walgreens.com",
+  },
+];
+
+
+export const trendingProducts2 = [
+  {
+    id: 1,
+    name: "Fresh Mangoes",
+    price: 120,
+    image: "https://via.placeholder.com/400x300?text=Mangoes",
+    description: "Delicious farm-fresh mangoes from Ratnagiri.",
+    shopName: "Fruit Mart",
+    shopAddress: "Market Road, Chennai",
+  },
+  {
+    id: 2,
+    name: "Organic Honey",
+    price: 250,
+    image: "https://via.placeholder.com/400x300?text=Honey",
+    description: "Pure and organic honey with no additives.",
+    shopName: "Nature Store",
+    shopAddress: "Eco Lane, Coimbatore",
   },
 ];

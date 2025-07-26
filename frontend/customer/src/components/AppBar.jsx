@@ -17,7 +17,7 @@ function BottomNavBar() {
         <Search />
         <span>Search</span>
       </Link>
-      <Link to="/Map" className={`nav-icon ${current("/wishlist")}`}>
+      <Link to="/favorites" className={`nav-icon ${current("/wishlist")}`}>
         <Heart />
         <span>Wishlist</span>
       </Link>

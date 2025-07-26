@@ -301,3 +301,41 @@
 .product-meta .product-discount {
   display: none;
 }
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.cart-controls {
+  margin-top: 10px;
+}
+
+.qty-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.add-btn {
+  padding: 6px 10px;
+  width: 100%;
+  border: none;
+  color:whitesmoke;
+  background-color: #393fec;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.qty-selector button{
+  padding: 6px 10px;
+  width: 100%;
+  border: none;
+  color:#0911f5;
+  background-color: whitesmoke;
+  cursor: pointer;
+  font-weight: bolder;
+  border-radius: 15%;
+  border-color: #0911f5;
+}

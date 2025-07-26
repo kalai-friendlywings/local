@@ -20,6 +20,7 @@ import ShopDetail from "./components/ShopDetail";
 import Shops from "./components/Shops.jsx";
 import Map from "./components/Map.jsx";
 import About from "./components/About";
+import ProductDetail from "./components/ProductDetail";
 import AllCategories from "./components/AllCategories";
 import { Navigate } from "react-router-dom";
 import ProtectedRoute from "./contexts/ProtectedRoute";
@@ -55,6 +56,7 @@ function App() {
         <Route path="/Map" element={<Map />} />
         <Route path="/about" element={<About />} />
         <Route path="/categories" element={<AllCategories />} />
+         <Route path="/product/:id" element={<ProductDetail />} />
       </Routes>
     </BrowserRouter>
   );

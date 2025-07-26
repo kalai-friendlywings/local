@@ -1,0 +1,27 @@
+/* ProductDetail.css */
+.product-image {
+  object-fit: cover;
+  max-height: 400px;
+}
+
+.add-to-cart-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 1rem 0;
+  border-top: 1px solid #dee2e6;
+  z-index: 1050;
+}
+
+@media (max-width: 768px) {
+  .add-to-cart-bar {
+    padding: 0.75rem;
+  }
+
+  .btn-lg {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
