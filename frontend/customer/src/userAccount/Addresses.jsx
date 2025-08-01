@@ -19,7 +19,7 @@ import {
   Alert,
   FormControlLabel,
   Checkbox,
-  MenuItem, // Added MenuItem for proper select component rendering
+  MenuItem,
 } from "@mui/material";
 import { Add, Edit, Delete } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
@@ -28,7 +28,6 @@ import * as Yup from "yup";
 
 const API_URL = "http://127.0.0.1:8000/api/addresses/";
 
-// Sorted stateCityMap alphabetically by state
 const stateCityMap = {
   "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Kadapa", "Krishna", "Kurnool", "Nellore", "Prakasam", "Srikakulam", "Visakhapatnam", "Vizianagaram", "West Godavari"],
   "Arunachal Pradesh": ["Anjaw", "Changlang", "Dibang Valley", "East Kameng", "East Siang", "Itanagar", "Kamle", "Kra Daadi", "Kurung Kumey", "Lepa Rada", "Lohit", "Longding", "Lower Dibang Valley", "Lower Siang", "Lower Subansiri", "Namsai", "Pakke-Kessang", "Papum Pare", "Shi Yomi", "Siang", "Tawang", "Tirap", "Upper Siang", "Upper Subansiri", "West Kameng", "West Siang"],
@@ -36,7 +35,7 @@ const stateCityMap = {
   "Bihar": ["Araria", "Arwal", "Aurangabad", "Banka", "Begusarai", "Bhagalpur", "Bhojpur", "Buxar", "Darbhanga", "East Champaran", "Gaya", "Gopalganj", "Jamui", "Jehanabad", "Kaimur", "Katihar", "Khagaria", "Kishanganj", "Lakhisarai", "Madhepura", "Madhubani", "Munger", "Muzaffarpur", "Nalanda", "Nawada", "Patna", "Purnia", "Rohtas", "Saharsa", "Samastipur", "Saran", "Sheikhpura", "Sheohar", "Sitamarhi", "Siwan", "Supaul", "Vaishali", "West Champaran"],
   "Chhattisgarh": ["Balod", "Baloda Bazar", "Balrampur", "Bastar", "Bemetara", "Bijapur", "Bilaspur", "Dantewada", "Dhamtari", "Durg", "Gariaband", "Gaurela-Pendra-Marwahi", "Janjgir-Champa", "Jashpur", "Kabirdham", "Kanker", "Kondagaon", "Korba", "Koriya", "Mahasamund", "Mungeli", "Narayanpur", "Raigarh", "Raipur", "Rajnandgaon", "Sarangarh-Bilaigarh", "Sakti", "Sukma", "Surajpur", "Surguja"],
   "Goa": ["North Goa", "South Goa"],
-  };
+};
 
 const validationSchema = Yup.object().shape({
   type: Yup.string().required("Type is required"),
@@ -73,7 +72,7 @@ const Addresses = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
-    mode: "onChange", // 👈 live validation
+    mode: "onChange",
     defaultValues: {
       type: "",
       username: "",
@@ -98,30 +97,32 @@ const Addresses = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
-
+  // Only one fetchAddresses function, not useCallback
   const fetchAddresses = async () => {
     try {
       const res = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAddresses(res.data);
-    } catch (err) {
+    } catch {
       showSnackbar("Failed to fetch addresses", "error");
     }
   };
 
+  useEffect(() => {
+    fetchAddresses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onSubmit = async (data) => {
     try {
       if (editId) {
-        const response = await axios.put(`${API_URL}${editId}/`, data, {
+        await axios.put(`${API_URL}${editId}/`, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
         showSnackbar("Address updated successfully");
       } else {
-        const response = await axios.post(API_URL, data, {
+        await axios.post(API_URL, data, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -131,7 +132,7 @@ const Addresses = () => {
       }
       fetchAddresses();
       handleCloseDialog();
-    } catch (err) {
+    } catch {
       showSnackbar("Failed to submit address", "error");
     }
   };
@@ -154,7 +155,7 @@ const Addresses = () => {
       });
       fetchAddresses();
       showSnackbar("Address deleted");
-    } catch (err) {
+    } catch {
       showSnackbar("Failed to delete address", "error");
     }
   };
@@ -168,7 +169,7 @@ const Addresses = () => {
       );
       fetchAddresses();
       showSnackbar("Default address updated successfully");
-    } catch (err) {
+    } catch {
       showSnackbar("Failed to update default address", "error");
     }
   };
@@ -301,13 +302,13 @@ const Addresses = () => {
                   name: "state",
                   label: "State",
                   select: true,
-                  options: Object.keys(stateCityMap).sort(), // Sorted states
+                  options: Object.keys(stateCityMap).sort(),
                 },
                 {
                   name: "city",
                   label: "City",
                   select: true,
-                  options: stateCityMap[watchState] ? stateCityMap[watchState].sort() : [], // Sorted cities
+                  options: stateCityMap[watchState] ? stateCityMap[watchState].sort() : [],
                 },
                 { name: "village", label: "Village" },
                 { name: "pinCode", label: "PIN Code", type: "tel" },
@@ -324,16 +325,14 @@ const Addresses = () => {
                         margin="dense"
                         label={label}
                         type={type}
-                        // Removed SelectProps={{ native: true }} to use Material-UI's native select for better styling
                         error={!!errors[name]}
                         helperText={errors[name]?.message}
                         onChange={(e) => {
                           field.onChange(e);
-                          if (name === "state") setValue("city", ""); // Clear city when state changes
+                          if (name === "state") setValue("city", "");
                         }}
                       >
                         {select && (
-                          // Added an empty MenuItem for placeholder/default selection
                           <MenuItem value="">
                             <em>Select a {label}</em>
                           </MenuItem>

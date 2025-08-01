@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth import get_user_model
+from django.conf import settings    
 from .models import UserSettings, Address
 from .serializers import (
     RegisterSerializer,
@@ -20,6 +21,10 @@ from .serializers import (
 from .models import Order
 from .serializers import OrderSerializer
 import logging
+import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+import json
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -184,3 +189,31 @@ class VerifyTokenView(APIView):
                 "valid": False,
                 "error": str(e)
             }, status=401)
+
+    
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_order_view(request):
+    try:
+        data = json.loads(request.body)
+        amount = int(data.get("amount", 0)) * 100  # amount in paise
+
+        if amount <= 0:
+            return JsonResponse({'error': 'Amount must be greater than zero'}, status=400)
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        razorpay_order = client.order.create({
+            "amount": amount,
+            "currency": "INR",
+            "payment_capture": "1"
+        })
+
+        return JsonResponse({
+            "order_id": razorpay_order["id"],
+            "currency": razorpay_order["currency"],
+            "key_id": settings.RAZORPAY_KEY_ID
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

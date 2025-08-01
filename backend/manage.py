@@ -2,7 +2,10 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import warnings
 
+# ⛔️ Suppress specific UserWarning (like Razorpay's pkg_resources warning)
+warnings.filterwarnings("ignore", category=UserWarning)
 
 def main():
     """Run administrative tasks."""
@@ -16,7 +19,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == '__main__':
     main()

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import CustomUser, Address, UserSettings
+from .models import CustomUser, Address, UserSettings,Payment
 
 
 @admin.register(CustomUser)
@@ -37,3 +37,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(UserSettings)
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'razorpay_order_id', 'is_paid', 'amount', 'created_at']

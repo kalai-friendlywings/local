@@ -3,10 +3,8 @@ import {
   Box, TextField, Button, CircularProgress, Snackbar, Alert, Typography
 } from '@mui/material';
 import API from '@/api/client';
-import { useAuth } from '@/contexts/AuthContext';
 
 const Profile = () => {
-  const { user } = useAuth();
   const [formData, setFormData] = useState({ username: '', email: '', contact: '' });
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -19,7 +17,7 @@ const Profile = () => {
         const response = await API.get('/profile/');
         const { username, email, contact } = response.data;
         setFormData({ username, email, contact: contact || '' });
-      } catch (error) {
+      } catch {
         setSnackbar({ open: true, message: 'Failed to load profile', severity: 'error' });
       } finally {
         setLoading(false);
@@ -32,19 +30,18 @@ const Profile = () => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
- const handleSave = async () => {
-  try {
-    setSaving(true);
-    await API.put('/profile/', formData);  // Make sure this hits the right endpoint
-    setSnackbar({ open: true, message: 'Profile updated!', severity: 'success' });
-    setEditMode(false);
-  } catch (error) {
-    setSnackbar({ open: true, message: 'Update failed', severity: 'error' });
-  } finally {
-    setSaving(false);
-  }
-};
-
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      await API.put('/profile/', formData);
+      setSnackbar({ open: true, message: 'Profile updated!', severity: 'success' });
+      setEditMode(false);
+    } catch {
+      setSnackbar({ open: true, message: 'Update failed', severity: 'error' });
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return <CircularProgress sx={{ mt: 5, mx: 'auto', display: 'block' }} />;

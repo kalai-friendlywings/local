@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { 
-  Box, Typography, List, ListItem, ListItemAvatar, 
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Box, Typography, List, ListItem, ListItemAvatar,
   ListItemText, Avatar, Chip, Divider, CircularProgress,
   Alert, Button, Rating
 } from '@mui/material';
-import { 
-  ShoppingBagOutlined, 
-  LocalShipping, 
+import {
+  ShoppingBagOutlined,
+  LocalShipping,
   DoneAll,
   Star,
   Refresh
@@ -20,7 +20,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -36,13 +36,13 @@ const Orders = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentUser.token]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.token) {
       fetchOrders();
     }
-  }, [currentUser]);
+  }, [fetchOrders, currentUser]);
 
   const handleRateOrder = async (orderId, rating) => {
     try {
@@ -51,14 +51,14 @@ const Orders = () => {
           Authorization: `Bearer ${currentUser.token}`
         }
       });
-      fetchOrders(); // Refresh orders after rating
+      fetchOrders();
     } catch (err) {
       console.error('Failed to rate order:', err);
     }
   };
 
   const getStatusChip = (status) => {
-    switch(status) {
+    switch (status) {
       case 'ready':
         return <Chip icon={<DoneAll fontSize="small" />} label="Ready for pickup" color="success" size="small" />;
       case 'completed':
@@ -80,12 +80,12 @@ const Orders = () => {
 
   if (error) {
     return (
-      <Alert 
-        severity="error" 
+      <Alert
+        severity="error"
         action={
-          <Button 
-            color="inherit" 
-            size="small" 
+          <Button
+            color="inherit"
+            size="small"
             startIcon={<Refresh />}
             onClick={fetchOrders}
           >
@@ -106,8 +106,8 @@ const Orders = () => {
         <Typography variant="h6" color="text.secondary">
           No orders found
         </Typography>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           sx={{ mt: 2 }}
           onClick={fetchOrders}
           startIcon={<Refresh />}
@@ -124,8 +124,8 @@ const Orders = () => {
         <Typography variant="h6" fontWeight={600}>
           Order History
         </Typography>
-        <Button 
-          variant="outlined" 
+        <Button
+          variant="outlined"
           size="small"
           onClick={fetchOrders}
           startIcon={<Refresh />}
@@ -134,11 +134,11 @@ const Orders = () => {
         </Button>
       </Box>
       <Divider sx={{ mb: 3 }} />
-      
+
       <List disablePadding>
         {orders.map((order, index) => (
           <Box key={order.id}>
-            <ListItem 
+            <ListItem
               alignItems="flex-start"
               sx={{
                 py: 2,
@@ -167,8 +167,8 @@ const Orders = () => {
                     <Typography variant="body2" component="span">
                       Order #{order.id} • {order.items.length} item{order.items.length > 1 ? 's' : ''}
                     </Typography>
-                    <Box sx={{ 
-                      display: 'flex', 
+                    <Box sx={{
+                      display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       mt: 1

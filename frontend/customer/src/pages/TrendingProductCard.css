@@ -1,12 +1,12 @@
-/* Base Product Card Styles */
+/* Product Card Container */
 .product-card {
   width: 100%;
-  max-width: 280px;
-  min-width: 220px;
+  max-width: 260px;
+  min-width: 180px;
   background: white;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -14,53 +14,70 @@
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Product Image Section */
+/* Image Section */
 .product-image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 1/1;
+  height: 140px;
   overflow: hidden;
+  border-radius: 12px 12px 0 0;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
 .product-card:hover .product-image {
   transform: scale(1.05);
 }
 
+/* Discount Badge */
+.discount-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: #D3E671;
+  color: #89AC46;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+/* Like Button */
 .like-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.9);
+  top: 8px;
+  right: 8px;
+  background: #fff;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+.like-btn.liked svg {
+  fill: #e83e8c;
+  stroke: #e83e8c;
 }
 
 .like-btn:hover {
-  background: white;
   transform: scale(1.1);
-}
-
-.like-btn.liked {
-  background: rgba(232, 62, 140, 0.1);
 }
 
 .like-btn.bounce {
@@ -68,20 +85,14 @@
 }
 
 @keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.4);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
-/* Product Details Section */
+/* Product Details */
 .product-details {
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -89,253 +100,177 @@
 
 .product-meta {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-}
-
-.product-location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
+  font-size: 11px;
   color: #6B7280;
-}
-
-.product-discount {
-  background: #EF4444;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  margin-bottom: 4px;
 }
 
 .product-name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  margin: 2px 0;
   color: #111827;
-  margin: 0 0 4px 0;
-  line-height: 1.4;
+  line-height: 1.2;
+  text-decoration: none !important;
+}
+
+.product-card-link {
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .product-brand {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #6B7280;
-  margin: 0 0 8px 0;
+  margin-bottom: 6px;
 }
 
 .product-description {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #6B7280;
-  margin: 0 0 16px 0;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
+  margin-bottom: 8px;
+  line-height: 1.3;
   overflow: hidden;
+  display: -webkit-box; 
+  -webkit-box-orient: vertical;
+}
+.related-product-card {
+  max-height: 250px;
+  min-width: 150px;
+  overflow: hidden;
+  text-decoration: none !important; /* 💡 removes blue underline */
+}
+.related-product-card img {
+  max-height: 80px;
+  object-fit: contain;
 }
 
-/* Pricing Section */
+
+/* Pricing */
 .product-pricing {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.8rem;
   margin-top: auto;
-  margin-bottom: 16px;
 }
 
 .price-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .current-price {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #111827;
 }
 
 .original-price {
-  font-size: 0.8rem;
-  color: #9CA3AF;
   text-decoration: line-through;
+  font-size: 0.7rem;
+  color: #9CA3AF;
 }
 
 .availability {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 500;
-  padding: 4px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
 }
 
 .availability.available {
-  background: #ECFDF5;
+  background-color: #ECFDF5;
   color: #065F46;
 }
 
 .availability.out-of-stock {
-  background: #FEF2F2;
+  background-color: #FEF2F2;
   color: #991B1B;
 }
 
-/* Add to Cart Button */
-.add-to-cart-btn {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: #0d6efd;
-  color: white;
-  font-weight: 500;
+/* Add to Cart Button & Quantity */
+.cart-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qty-selector {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 6px;
+}
+
+.qty-selector button {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  background-color: #f3f4f6;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: bold;
 }
 
-.add-to-cart-btn:hover {
-  background: #2563EB;
+.add-btn {
+  padding: 6px 10px;
+  width: 100%;
+  font-size: 0.8rem;
+  color: white;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
-.add-to-cart-btn:disabled {
-  background: #E5E7EB;
-  color: #9CA3AF;
+.add-btn:hover {
+  background-color: #2563eb;
+}
+
+.add-to-cart-btn {
+  padding: 6px 10px;
+  width: 100%;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  background-color: #e5e7eb;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
   cursor: not-allowed;
 }
 
-/* Container for Horizontal Scroll */
+/* Scroll container */
 .trending-scroll-container {
   display: flex;
   gap: 16px;
   overflow-x: auto;
-  padding: 16px 0;
   scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  padding: 16px 0;
 }
 
 .trending-scroll-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Responsive Adjustments */
+/* Mobile Optimizations */
 @media (max-width: 768px) {
   .product-card {
-    min-width: 180px;
+    min-width: 170px;
   }
-
   .product-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
-
   .product-brand,
-  .product-description {
-    font-size: 0.75rem;
-  }
-
-  .current-price {
-    font-size: 1rem;
-  }
-
+  .product-description,
   .original-price {
     font-size: 0.7rem;
   }
-
+  .add-btn,
   .add-to-cart-btn {
-    font-size: 0.8rem;
-    padding: 8px;
+    font-size: 0.75rem;
   }
-}
-
-@media (max-width: 480px) {
-  .product-card {
-    min-width: 160px;
-  }
-
-  .product-image-container {
-    aspect-ratio: 1/1.1;
-  }
-}
-
-/* Discount Badge Styles */
-.discount-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #D3E671;
-  color: #89AC46;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  z-index: 1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Product Image Container */
-.product-image-container {
-  position: relative;
-}
-
-/* Like Button Positioning */
-.like-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  width: 35px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-/* Remove the discount from product-meta since it's now at the top */
-.product-meta .product-discount {
-  display: none;
-}
-
-.product-card-link {
-  text-decoration: none;
-  color: inherit;
-}
-.cart-controls {
-  margin-top: 10px;
-}
-
-.qty-selector {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-
-.add-btn {
-  padding: 6px 10px;
-  width: 100%;
-  border: none;
-  color:whitesmoke;
-  background-color: #393fec;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.qty-selector button{
-  padding: 6px 10px;
-  width: 100%;
-  border: none;
-  color:#0911f5;
-  background-color: whitesmoke;
-  cursor: pointer;
-  font-weight: bolder;
-  border-radius: 15%;
-  border-color: #0911f5;
 }

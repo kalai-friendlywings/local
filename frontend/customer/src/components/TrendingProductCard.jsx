@@ -6,11 +6,10 @@ import "../pages/TrendingProductCard.css";
 
 function TrendingProductCard({ product }) {
   const dispatch = useDispatch();
-  const cartItem = useSelector(state =>
-    state.cart.items.find(item => item.id === product.id)
+  const cartItem = useSelector((state) =>
+    state.cart.items.find((item) => item.id === product.id)
   );
   const [liked, setLiked] = useState(false);
-
   const quantity = cartItem?.quantity || 0;
 
   const calculateDiscount = () => {
@@ -27,12 +26,11 @@ function TrendingProductCard({ product }) {
   const discountPercentage = calculateDiscount();
 
   const toggleLike = (e) => {
-    e.stopPropagation();
     e.preventDefault();
     setLiked(!liked);
     const heart = document.querySelector(`.like-btn-${product.id}`);
-    heart.classList.add("bounce");
-    setTimeout(() => heart.classList.remove("bounce"), 400);
+    heart?.classList.add("bounce");
+    setTimeout(() => heart?.classList.remove("bounce"), 400);
   };
 
   const handleAdd = (e) => {
@@ -57,18 +55,17 @@ function TrendingProductCard({ product }) {
   return (
     <Link to={`/product/${product.id}`} className="product-card-link">
       <div className="product-card">
+        {/* Image Section */}
         <div className="product-image-container">
           {discountPercentage > 0 && (
             <div className="discount-badge">{discountPercentage}% OFF</div>
           )}
-
           <img
             src={product.image}
             alt={product.name}
             className="product-image"
             loading="lazy"
           />
-
           <button
             className={`like-btn like-btn-${product.id} ${liked ? "liked" : ""}`}
             onClick={toggleLike}
@@ -91,6 +88,7 @@ function TrendingProductCard({ product }) {
           </button>
         </div>
 
+        {/* Product Text Info */}
         <div className="product-details">
           <div className="product-meta">
             <span className="product-location">
@@ -123,12 +121,14 @@ function TrendingProductCard({ product }) {
             {product.description || "Trending local product"}
           </p>
 
+          {/* Pricing Section */}
           <div className="product-pricing">
             <div className="price-container">
               <span className="current-price">
                 ₹{product.discount_price || product.original_price}
               </span>
               {product.original_price &&
+                product.discount_price &&
                 product.original_price > product.discount_price && (
                   <span className="original-price">
                     ₹{product.original_price}
@@ -137,14 +137,15 @@ function TrendingProductCard({ product }) {
             </div>
             <span
               className={`availability ${
-                product.stock > 0 ? "available" : "out-of-stock"
+                product.available ? "available" : "out-of-stock"
               }`}
             >
-              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              {product.available ? "In Stock" : "Out of Stock"}
             </span>
           </div>
 
-          {product.stock > 0 ? (
+          {/* Cart Controls */}
+          {product.available ? (
             <div className="cart-controls">
               {quantity > 0 ? (
                 <div className="qty-selector">

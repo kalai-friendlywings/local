@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 // Removed: import { ChevronDown } from 'lucide-react'; // This import was causing an error
 
 // Team members data

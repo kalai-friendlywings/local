@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 # settings.py
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
@@ -90,6 +91,10 @@ CORS_ALLOW_ALL_ORIGINS = True  # or configure allowed origins
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',  # React dev server
 ]
+
+RAZORPAY_KEY_ID = 'rzp_test_3lxvisn3dTxhCd'
+RAZORPAY_KEY_SECRET = 'HPOvVPF1xrNzfNJXBASlehGa'
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # e.g., React dev server

@@ -154,7 +154,22 @@ export default function Shops() {
           mb: 3,
           pb: 1,
         }}
-      >
+
+         style={{
+    scrollbarWidth: "none", // For Firefox
+    msOverflowStyle: "none", // For IE and Edge
+    overflowX: "auto",
+  }}
+>
+  <style>
+    {`
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .d-flex::-webkit-scrollbar {
+        display: none;
+      }
+    `}
+  </style>
+  
         {allTags.map((tag) => (
           <Chip
             key={tag}

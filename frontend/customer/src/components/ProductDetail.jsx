@@ -198,10 +198,24 @@ function ProductDetail() {
       </div>
 
       {/* Related Products */}
-      {/* Related Products */}
       <div className="mt-5">
         <h5 className="mb-3">Related Products</h5>
-        <div className="d-flex overflow-auto gap-3 pb-2">
+        <div
+          className="d-flex overflow-auto gap-3 pb-2"
+          style={{
+            scrollbarWidth: "none", // For Firefox
+            msOverflowStyle: "none", // For IE and Edge
+            overflowX: "auto",
+          }}
+        >
+          <style>
+            {`
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .d-flex::-webkit-scrollbar {
+        display: none;
+      }
+    `}
+          </style>
           {[
             {
               id: 101,

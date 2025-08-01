@@ -31,6 +31,7 @@ urlpatterns = [
      path('orders/', OrderListView.as_view(), name='order-list'),
      path('verify-token/', VerifyTokenView.as_view(), name='verify-token'),
     path('orders/<int:pk>/rate/', RateOrderView.as_view(), name='rate-order'),
+     path('create-order/', views.create_order_view, name='create-order'),  # ✅ This is the missing line
 ] + router.urls
 
 

@@ -11,6 +11,7 @@ import Favorites from "./userAccount/Favorites";
 import PaymentMethods from "./userAccount/PaymentMethods";
 import Settings from "./userAccount/Settings.jsx";
 import AddToCartPage from "./components/AddToCartPage";
+import PaymentPage from "./components/PaymentPage";
 import CheckoutPage from "./components/CheckoutPage";
 import ForgotPassword from "./components/ForgotPassword";
 import BillSummary from "./components/BillSummary";
@@ -45,7 +46,7 @@ function App() {
           <Route path="payment" element={<PaymentMethods />} />
            <Route path="settings" element={<Settings />} />  {/* ✅ CORRECT */}
         </Route>
-
+        <Route path="/PaymentPage" element={<PaymentPage />} />
         <Route path="/cart" element={<AddToCartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/BillSummary" element={<BillSummary />} />
