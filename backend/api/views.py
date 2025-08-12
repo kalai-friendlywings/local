@@ -217,3 +217,25 @@ def create_order_view(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from rest_framework.permissions import IsAuthenticated
+
+class MerchantListView(APIView):
+    permission_classes = [IsAuthenticated]  # ✅ Require JWT authentication
+
+    def get(self, request):
+        merchants = get_merchants()
+        return Response(merchants, status=status.HTTP_200_OK)
+
+class MerchantDetailView(APIView):
+    permission_classes = [IsAuthenticated]  # ✅ Require JWT authentication
+
+    def get(self, request, merchant_id):
+        merchant = get_merchant_detail(merchant_id)
+        if merchant:
+            return Response(merchant, status=status.HTTP_200_OK)
+        return Response({"error": "Merchant not found"}, status=status.HTTP_404_NOT_FOUND)

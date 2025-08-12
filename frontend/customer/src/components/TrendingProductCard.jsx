@@ -160,7 +160,7 @@ function TrendingProductCard({ product }) {
               )}
             </div>
           ) : (
-            <button className="add-to-cart-btn" disabled>
+            <button className="add-to-cart-btn " disabled>
               Notify Me
             </button>
           )}

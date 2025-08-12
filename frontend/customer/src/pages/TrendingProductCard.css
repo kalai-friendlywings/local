@@ -232,7 +232,8 @@
 }
 
 .add-to-cart-btn {
-  padding: 6px 10px;
+  padding: 6px 9px;
+  margin-top: 10px;
   width: 100%;
   font-size: 0.8rem;
   color: #9ca3af;

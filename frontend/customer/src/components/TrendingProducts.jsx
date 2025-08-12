@@ -5,7 +5,7 @@ import "../Pages/TrendingProductCard.css";
 
 function TrendingProducts() {
   return (
-    <section className="my-5 px-2">
+    <section className="my-1 px-2">
       <h3 className="mb-4 fw-bold">Trending This Week</h3>
       <div className="trending-scroll-container">
         {trendingProducts.map((product) => (

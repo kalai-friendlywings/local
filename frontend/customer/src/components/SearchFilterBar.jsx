@@ -149,22 +149,26 @@ function SearchFilterBar() {
           </div>
         )}
 
-        {/* Search input and button */}
         <div className="col-12">
-          <input
-            type="text"
-            className="form-control form-control-lg"
-            placeholder="Search for products or shops..."
-            onClick={() =>
-              navigate(
-                `/search-results?query=${encodeURIComponent(
-                  searchQuery
-                )}&location=${encodeURIComponent(location)}`
-              )
-            }
-            readOnly
-            style={{ cursor: "pointer", backgroundColor: "#fff" }}
-          />
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <i className="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              className="form-control form-control-lg border-start-0"
+              placeholder=" Search for products..."
+              onClick={() =>
+                navigate(
+                  `/search-results?query=${encodeURIComponent(
+                    searchQuery
+                  )}&location=${encodeURIComponent(location)}`
+                )
+              }
+              readOnly
+              style={{ cursor: "pointer", backgroundColor: "#fff" }}
+            />
+          </div>
         </div>
       </div>
     </form>

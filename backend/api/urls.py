@@ -11,6 +11,8 @@ from .views import (
     UserSettingsView,
     AddressViewSet, 
     VerifyTokenView,
+    MerchantListView,
+    MerchantDetailView
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -31,7 +33,8 @@ urlpatterns = [
      path('orders/', OrderListView.as_view(), name='order-list'),
      path('verify-token/', VerifyTokenView.as_view(), name='verify-token'),
     path('orders/<int:pk>/rate/', RateOrderView.as_view(), name='rate-order'),
-     path('create-order/', views.create_order_view, name='create-order'),  # ✅ This is the missing line
+    path('create-order/', views.create_order_view, name='create-order'),  # ✅ This is the missing line
+    path("merchants/", MerchantListView.as_view(), name="merchant-list"),
+    path("merchants/<int:merchant_id>/", MerchantDetailView.as_view(), name="merchant-detail"),
 ] + router.urls
-
 
