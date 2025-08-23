@@ -1,3 +1,4 @@
+# backend/api/views.py
 from rest_framework import generics, permissions, viewsets, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -8,7 +9,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth import get_user_model
-from django.conf import settings    
+from django.conf import settings 
+import requests   
 from .models import UserSettings, Address
 from .serializers import (
     RegisterSerializer,
@@ -54,19 +56,20 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    
     def get(self, request):
         serializer = CustomUserSerializer(request.user)
         return Response(serializer.data)
 
     def put(self, request):
-        serializer = CustomUserSerializer(request.user, data=request.data, partial=True)
+        serializer = CustomUserSerializer(
+            request.user, data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
-                              
+
 class UserSettingsView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSettingsSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -218,24 +221,42 @@ def create_order_view(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from rest_framework.permissions import IsAuthenticated
+from .services.merchant_api import merchant_api_get
 
 class MerchantListView(APIView):
-    permission_classes = [IsAuthenticated]  # ✅ Require JWT authentication
-
     def get(self, request):
-        merchants = get_merchants()
-        return Response(merchants, status=status.HTTP_200_OK)
+        merchants = merchant_api_get("/api/merchants/")
+        return Response(merchants)
 
 class MerchantDetailView(APIView):
-    permission_classes = [IsAuthenticated]  # ✅ Require JWT authentication
-
     def get(self, request, merchant_id):
-        merchant = get_merchant_detail(merchant_id)
-        if merchant:
-            return Response(merchant, status=status.HTTP_200_OK)
-        return Response({"error": "Merchant not found"}, status=status.HTTP_404_NOT_FOUND)
+        merchant = merchant_api_get(f"/api/merchants/{merchant_id}/")
+        return Response(merchant)
+
+class ProductListView(APIView):
+    def get(self, request):
+        try:
+            response = requests.get(f"{settings.MERCHANT_API_BASE}/api/merchant/products/")
+            response.raise_for_status()
+            products = response.json()
+            return Response(products)
+        except requests.RequestException as e:
+            return Response({"error": f"Failed to fetch products: {str(e)}"}, status=500)
+
+MERCHANT_API_URL = "http://localhost:8001/api/products/"
+
+class MerchantProductList(APIView):
+    def get(self, request):
+        query = request.query_params.get("query", "")
+        loc = request.query_params.get("location", "")
+
+        params = {}
+        if query:
+            params["search"] = query
+        if loc:
+            params["location"] = loc
+
+        response = requests.get(MERCHANT_API_URL, params=params)
+        return Response(response.json())

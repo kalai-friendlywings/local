@@ -70,19 +70,18 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
 }
+# settings.py
 
-# REST Framework config
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+    "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
     ],
 }
 
@@ -101,7 +100,9 @@ RAZORPAY_KEY_SECRET = 'HPOvVPF1xrNzfNJXBASlehGa'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # e.g., React dev server
     "http://localhost:5173",  # e.g., Vite dev server 
+    "http://localhost:8001",  # Allow merchant dashboard
 ]
+MERCHANT_API_BASE = "http://localhost:8001"
 
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
@@ -114,6 +115,8 @@ ROOT_URLCONF = 'backend.urls'
 
 # settings.py
 DEBUG = True
+
+
 
 # Add this to see more detailed error messages
 if DEBUG:
@@ -156,6 +159,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+MERCHANT_API_BASE = "http://localhost:8001"  # Merchant API server
+MERCHANT_API_LOGIN = "bridge_user"  # Merchant dashboard account created for bridging
+MERCHANT_API_PASSWORD = "bridge_pass"
 
 
 AUTHENTICATION_BACKENDS = (

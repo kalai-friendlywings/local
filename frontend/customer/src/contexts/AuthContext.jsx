@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import API from "@/api/client";
+import API, { setAuthToken } from "@/api/client";
 import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
-    delete API.defaults.headers.common["Authorization"];
+    setAuthToken(null);
     setUser(null);
   }, []);
 
@@ -25,7 +25,8 @@ export const AuthProvider = ({ children }) => {
     try {
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
-      API.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+      setAuthToken(access);
+
       const response = await API.get("profile/");
       setUser(response.data);
     } catch {
@@ -38,10 +39,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const refresh = localStorage.getItem("refresh");
       if (!refresh) return null;
+
       const response = await API.post("token/refresh/", { refresh });
       const newAccess = response.data.access;
       localStorage.setItem("access", newAccess);
-      API.defaults.headers.common["Authorization"] = `Bearer ${newAccess}`;
+      setAuthToken(newAccess);
       return newAccess;
     } catch {
       logout();
@@ -63,7 +65,7 @@ export const AuthProvider = ({ children }) => {
           throw new Error("Token expired");
         }
 
-        API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        setAuthToken(token);
         const response = await API.get("profile/");
         setUser(response.data);
       } catch (error) {
@@ -92,7 +94,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

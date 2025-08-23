@@ -1,36 +1,33 @@
-import axios from 'axios';
+// src/api/client.js
+import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/",
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
-  withCredentials: true
 });
 
 // Helper to set token manually
 export const setAuthToken = (token) => {
   if (token) {
-    API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete API.defaults.headers.common["Authorization"];
   }
 };
 
-// Helper to clear token manually
-export const clearAuthToken = () => {
-  delete API.defaults.headers.common['Authorization'];
-};
-
-// Request interceptor
-API.interceptors.request.use(config => {
-  const token = localStorage.getItem('access');
+// Request interceptor: attach access token
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Response interceptor
+// Response interceptor: auto-refresh access token
 API.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -38,28 +35,26 @@ API.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
-        const refreshToken = localStorage.getItem('refresh');
-        if (!refreshToken) throw new Error('No refresh token');
+        const refreshToken = localStorage.getItem("refresh");
+        if (!refreshToken) throw new Error("No refresh token");
 
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/token/refresh/`,
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/"}token/refresh/`,
           { refresh: refreshToken }
         );
 
-        const newAccessToken = response.data.access;
-        localStorage.setItem('access', newAccessToken);
+        const newAccessToken = res.data.access;
+        localStorage.setItem("access", newAccessToken);
         setAuthToken(newAccessToken);
-        
+
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return API(originalRequest);
-
-      } catch (refreshError) {
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
+      } catch (err) {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        window.location.href = "/login";
+        return Promise.reject(err);
       }
     }
 
